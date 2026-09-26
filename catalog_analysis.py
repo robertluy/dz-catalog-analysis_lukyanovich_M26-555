@@ -173,6 +173,21 @@ def actor_filmography(movies):
     return res
 
 
+def all_genres(movies):
+    s = set()
+    for i in movies:
+        s.update(set(i["genres"]))
+    return s
+
+
+def common_actors(movie1, movie2):
+    return set(movie1["actors"]) & set(movie2["actors"])
+
+
+def genres_only_in_one(movies_a, movies_b):
+    return all_genres(movies_a) - all_genres(movies_b)
+
+
 if __name__ == "__main__":
     for i in movies:
         if "comedy" in i["genres"]:
@@ -190,5 +205,6 @@ if __name__ == "__main__":
     upper_ave = {
         movie["title"]: movie["rating"] for movie in movies if movie["rating"] > ave
     }
-    print(actor_filmography(movies))
-    print(upper_ave)
+    print(all_genres(movies))
+    print(common_actors(movies[0], movies[3]))
+    print(genres_only_in_one(movies[5:6], movies[:5]))
