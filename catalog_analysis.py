@@ -142,6 +142,18 @@ def format_report_line(movie):
     }'
 
 
+def titles_sorted_by_rating(movies):
+    return sorted(
+        [(movie["title"], movie["rating"]) for movie in movies],
+        key=lambda pair: pair[1],
+        reverse=True,
+    )
+
+
+def top_n_by_rating(movies, n=3):
+    return titles_sorted_by_rating(movies)[:n]
+
+
 if __name__ == "__main__":
     for i in movies:
         if "comedy" in i["genres"]:
@@ -155,7 +167,4 @@ if __name__ == "__main__":
         ind += 1
     else:
         print("Шедевров не найдено")
-    print(count_long_movies(movies))
-    print(normalize_title("silent hours"))
-    print(make_slug("Silent Hours"))
-    print(format_report_line(movies[7]))
+    print(top_n_by_rating(movies, 3))
