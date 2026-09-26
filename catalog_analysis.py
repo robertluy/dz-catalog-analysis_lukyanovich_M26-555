@@ -96,46 +96,66 @@ def catalog_age_stats(movies, current_year=2026):
 def duration_in_hours(minutes):
     return f"{minutes // 60}ч {minutes % 60}м"
 
+
 def rating_tier(rating):
     otv = None
     if rating < 5:
-        otv = 'слабо'
+        otv = "слабо"
     elif rating < 7:
         otv = "средне"
     elif rating < 9:
         otv = "хорошо"
-    return otv if otv is not None else 'шедевр'
+    return otv if otv is not None else "шедевр"
+
 
 def decade_label(year):
     match year:
         case _ if year < 2015:
-            return 'старые'
+            return "старые"
         case _ if year <= 2020:
-            return 'недавние'
+            return "недавние"
         case _:
-            return 'новые'
+            return "новые"
+
 
 def count_long_movies(movies, threshold=120):
     c = 0
     for i in movies:
-        if i['duration_min'] > threshold:
+        if i["duration_min"] > threshold:
             c += 1
     return c
 
+
+def normalize_title(title):
+    return " ".join([word[0].upper() + word[1:] for word in title.split()])
+
+
+def make_slug(title):
+    return title.lower().replace(" ", "-")
+
+
+def format_report_line(movie):
+    return f'"{normalize_title(movie["title"])}" ({movie["year"]}) — {
+        movie["rating"]
+    }/10, {duration_in_hours(movie["duration_min"])}, жанры: {
+        ", ".join(sorted(movie["genres"]))
+    }'
+
+
 if __name__ == "__main__":
     for i in movies:
-        if 'comedy' in i['genres']:
+        if "comedy" in i["genres"]:
             continue
-        print(i['title'])
+        print(i["title"])
     ind = 0
     while ind < len(movies):
-        if movies[ind]['rating'] > 9.0:
-            print(movies[ind]['title'])
+        if movies[ind]["rating"] > 9.0:
+            print(movies[ind]["title"])
             break
         ind += 1
     else:
-        print('Шедевров не найдено')
+        print("Шедевров не найдено")
     print(count_long_movies(movies))
-
-
-
+    print(normalize_title("silent hours"))
+    print(make_slug("Silent Hours"))
+    print(format_report_line(movies[7]))
