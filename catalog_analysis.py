@@ -154,6 +154,25 @@ def top_n_by_rating(movies, n=3):
     return titles_sorted_by_rating(movies)[:n]
 
 
+def count_by_genre(movies):
+    res = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            res[genre] = res.get(genre, 0) + 1
+    return res
+
+
+def actor_filmography(movies):
+    res = dict()
+    for movie in movies:
+        for actor in movie["actors"]:
+            if actor in res:
+                res[actor].append(movie["title"])
+            else:
+                res[actor] = [movie["title"]]
+    return res
+
+
 if __name__ == "__main__":
     for i in movies:
         if "comedy" in i["genres"]:
@@ -167,4 +186,9 @@ if __name__ == "__main__":
         ind += 1
     else:
         print("Шедевров не найдено")
-    print(top_n_by_rating(movies, 3))
+    ave = average_rating(movies)
+    upper_ave = {
+        movie["title"]: movie["rating"] for movie in movies if movie["rating"] > ave
+    }
+    print(actor_filmography(movies))
+    print(upper_ave)
