@@ -115,9 +115,27 @@ def decade_label(year):
         case _:
             return 'новые'
 
+def count_long_movies(movies, threshold=120):
+    c = 0
+    for i in movies:
+        if i['duration_min'] > threshold:
+            c += 1
+    return c
 
 if __name__ == "__main__":
-    print(decade_label(2021))
-    print(decade_label(2020))
-    print(decade_label(2015))
-    print(decade_label(2014))
+    for i in movies:
+        if 'comedy' in i['genres']:
+            continue
+        print(i['title'])
+    ind = 0
+    while ind < len(movies):
+        if movies[ind]['rating'] > 9.0:
+            print(movies[ind]['title'])
+            break
+        ind += 1
+    else:
+        print('Шедевров не найдено')
+    print(count_long_movies(movies))
+
+
+
