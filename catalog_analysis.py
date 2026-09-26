@@ -96,8 +96,28 @@ def catalog_age_stats(movies, current_year=2026):
 def duration_in_hours(minutes):
     return f"{minutes // 60}ч {minutes % 60}м"
 
+def rating_tier(rating):
+    otv = None
+    if rating < 5:
+        otv = 'слабо'
+    elif rating < 7:
+        otv = "средне"
+    elif rating < 9:
+        otv = "хорошо"
+    return otv if otv is not None else 'шедевр'
+
+def decade_label(year):
+    match year:
+        case _ if year < 2015:
+            return 'старые'
+        case _ if year <= 2020:
+            return 'недавние'
+        case _:
+            return 'новые'
+
 
 if __name__ == "__main__":
-    print(average_rating(movies))
-    print(catalog_age_stats(movies))
-    print(duration_in_hours(155))
+    print(decade_label(2021))
+    print(decade_label(2020))
+    print(decade_label(2015))
+    print(decade_label(2014))
